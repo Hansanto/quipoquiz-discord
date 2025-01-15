@@ -18,7 +18,7 @@ dependencyResolutionManagement {
             version("detekt", "1.23.7")
             version("ktlint", "12.1.2")
             version("graphql", "4.1.0")
-            version("graphql-ktor", "0.1.0")
+            version("graphql-ktor", "0.1.1")
             version("graphql-mockserver", "0.1.0")
             version("kord", "feature-native-SNAPSHOT")
             version("kord-emoji", "feature-mpp-SNAPSHOT")
