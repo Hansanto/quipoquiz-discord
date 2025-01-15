@@ -1,0 +1,6 @@
+query CountQuiz($siteId: [QueryArgument]!) {
+    entryCount(
+        section: "quiz"
+        siteId: $siteId
+    )
+}

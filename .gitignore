@@ -1,0 +1,15 @@
+.gradle
+build
+reports
+
+.idea
+*.iml
+.run
+*.tmp
+
+.kotlin
+kotlin-js-store
+
+*.graphqls
+
+graphql.config.yml

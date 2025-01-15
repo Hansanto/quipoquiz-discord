@@ -1,0 +1,27 @@
+FROM gradle:jdk21-alpine AS gradle-build
+WORKDIR /usr/app
+
+COPY settings.gradle.kts build.gradle.kts gradle.properties ./
+COPY src src
+
+RUN --mount=type=secret,id=QUIPOQUIZ_TOKEN \
+    QUIPOQUIZ_TOKEN=$(cat /run/secrets/QUIPOQUIZ_TOKEN) \
+    gradle generateSources compileProductionExecutableKotlinJs jsPackageJson
+
+FROM node:lts-alpine3.20 AS node-build
+WORKDIR /usr/app
+
+COPY --from=gradle-build /usr/app/build/compileSync/js/main/productionExecutable/kotlin /usr/app/build/js/packages/quipoquiz-discord/package.json ./
+
+RUN npm install && npm cache clean --force
+
+FROM node:lts-alpine3.20 AS runtime
+WORKDIR /usr/app
+
+LABEL org.opencontainers.image.source="https://github.com/Hansanto/quipoquiz-discord"
+
+USER node
+
+COPY --from=node-build /usr/app .
+
+ENTRYPOINT ["node", "/usr/app/quipoquiz-discord.js"]

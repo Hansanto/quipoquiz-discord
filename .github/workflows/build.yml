@@ -1,0 +1,95 @@
+name: Build
+
+on:
+  push:
+    branches-ignore:
+      - "v*" # Skip tags
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validation:
+    name: Validate Gradle Wrapper
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: gradle/actions/wrapper-validation@v4
+
+  build:
+    needs: [ validation ]
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest # MacOS is able to build all platforms
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialization
+        id: init
+        uses: ./.github/actions/init
+        with:
+          jdk: 21
+
+      - name: Generate sources
+        run: ./gradlew generateSources
+        env:
+          QUIPOQUIZ_TOKEN: ${{ secrets.QUIPOQUIZ_TOKEN }}
+
+      - name: Check format
+        run: ./gradlew ktlintCheck
+
+      - name: Check code style
+        run: ./gradlew detektAll
+
+      - name: Build
+        run: ./gradlew assemble
+
+  test:
+    needs: [ validation ]
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialization
+        id: init
+        uses: ./.github/actions/init
+        with:
+          jdk: 21
+
+      - name: Generate sources
+        run: ./gradlew generateSources
+        env:
+          QUIPOQUIZ_TOKEN: ${{ secrets.QUIPOQUIZ_TOKEN }}
+
+      - name: Run tests
+        run: ./gradlew allTests
+
+  build-docker-jvm:
+    needs: [ build ]
+    name: Build Docker image for JVM
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: QUIPOQUIZ_TOKEN=${{ secrets.QUIPOQUIZ_TOKEN }} docker build --secret id=QUIPOQUIZ_TOKEN -t quipoquiz-bot-jvm -f DockerfileJvm .
+
+  build-docker-node:
+    needs: [ build ]
+    name: Build Docker image for Node
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: QUIPOQUIZ_TOKEN=${{ secrets.QUIPOQUIZ_TOKEN }} docker build --secret id=QUIPOQUIZ_TOKEN -t quipoquiz-bot-node -f DockerfileNode .
