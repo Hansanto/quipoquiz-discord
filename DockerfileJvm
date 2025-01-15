@@ -1,0 +1,28 @@
+# Issue to upgrade the image https://github.com/gradle/gradle/issues/30970
+FROM gradle:jdk21-alpine AS gradle-build
+WORKDIR /usr/app
+
+COPY settings.gradle.kts build.gradle.kts gradle.properties ./
+COPY src src
+COPY app/jvm app/jvm
+
+RUN --mount=type=secret,id=QUIPOQUIZ_TOKEN \
+    QUIPOQUIZ_TOKEN=$(cat /run/secrets/QUIPOQUIZ_TOKEN) \
+    gradle generateSources app:jvm:assembleDist app:jvm:installDist \
+    && rm /usr/app/app/jvm/build/install/jvm/bin/jvm.bat
+
+FROM eclipse-temurin:21.0.5_11-jre-alpine AS runtime
+WORKDIR /usr/app
+
+LABEL org.opencontainers.image.source="https://github.com/Hansanto/quipoquiz-discord"
+
+# Create a non-root user and switch to it
+RUN addgroup -S app && adduser -S app -G app
+USER app
+
+COPY --from=gradle-build /usr/app/app/jvm/build/install/jvm .
+
+VOLUME /tmp
+ENV QUIPOQUIZ_CACHE_DIRECTORY=/tmp
+
+ENTRYPOINT ["bin/jvm"]

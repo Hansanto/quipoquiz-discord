@@ -1,0 +1,19 @@
+query GetCategories($siteId: [QueryArgument]!) {
+    categoriesEntries(siteId: $siteId) {
+        ...DetailedCategory
+    }
+}
+
+fragment DetailedCategory on categories_default_Entry {
+    __typename
+    id
+    color
+    title
+    language
+    image(limit: 1) {
+        url
+    }
+    icon(limit: 1) {
+        url
+    }
+}

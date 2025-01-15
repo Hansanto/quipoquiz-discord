@@ -1,0 +1,64 @@
+query GetQuizzes($limit: Int!, $offset: Int!, $siteId: [QueryArgument]!) {
+    quizEntries(
+        limit: $limit
+        offset: $offset
+        siteId: $siteId
+        orderBy: "id ASC"
+    ) {
+        ...Quiz
+    }
+}
+
+fragment Quiz on quiz_default_Entry {
+    __typename
+    id
+    answer_type
+    language
+    title
+    # Get only the one category with the lowest id
+    # This allows to minimize the number of categories
+    # Because some quizzes have multiple categories
+    quiz_category(limit: 1, orderBy: "id ASC") {
+        id
+    }
+    quiz_image(limit: 1) {
+        url
+    }
+    # Get all questions
+    questions_true_or_false {
+        ...QuestionTrueOrFalse
+    }
+    questions_multiple_choices {
+        ...QuestionMultipleChoices
+    }
+}
+
+fragment QuestionTrueOrFalse on questions_default_Entry {
+    __typename
+    id
+    title
+    answer
+    anwser_explanation
+    image(limit: 1) {
+        url
+    }
+}
+
+fragment QuestionMultipleChoices on questions_default_Entry {
+    __typename
+    id
+    title
+    anwser_explanation
+    image(limit: 1) {
+        url
+    }
+    anwser_choices {
+        ...AnswerChoice
+    }
+}
+
+fragment AnswerChoice on anwser_choices_TableRow {
+    __typename
+    choice
+    good_answer
+}
