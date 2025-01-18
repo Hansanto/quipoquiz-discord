@@ -2,8 +2,17 @@ package io.github.hansanto.quipoquiz
 
 import de.comahe.i18n4k.i18n4kInitCldrPluralRules
 import dev.kord.core.Kord
+import dev.kord.core.enableEvent
+import dev.kord.core.enableEvents
 import dev.kord.core.event.gateway.ReadyEvent
-import dev.kord.gateway.Intent
+import dev.kord.core.event.interaction.ApplicationCommandInteractionCreateEvent
+import dev.kord.core.event.interaction.AutoCompleteInteractionCreateEvent
+import dev.kord.core.event.interaction.ButtonInteractionCreateEvent
+import dev.kord.core.event.interaction.ChatInputCommandInteractionCreateEvent
+import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
+import dev.kord.core.event.interaction.MessageCommandInteractionCreateEvent
+import dev.kord.core.event.interaction.SelectMenuInteractionCreateEvent
+import dev.kord.core.event.interaction.UserCommandInteractionCreateEvent
 import io.github.hansanto.quipoquiz.config.BotConfiguration
 import io.github.hansanto.quipoquiz.config.QuipoQuizConfiguration
 import io.github.hansanto.quipoquiz.discord.command.argument.CategoryIdOptionalArgument
@@ -47,8 +56,17 @@ suspend fun main() {
         registerCommands(kord, service)
         kord.login {
             intents {
-                +Intent.Guilds
-                +Intent.GuildMessages
+                enableEvents(
+                    ReadyEvent::class,
+                    ButtonInteractionCreateEvent::class,
+                    ApplicationCommandInteractionCreateEvent::class,
+                    MessageCommandInteractionCreateEvent::class,
+                    UserCommandInteractionCreateEvent::class,
+                    ChatInputCommandInteractionCreateEvent::class,
+                    AutoCompleteInteractionCreateEvent::class,
+                    ComponentInteractionCreateEvent::class,
+                    SelectMenuInteractionCreateEvent::class
+                )
             }
         }
     }
