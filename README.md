@@ -6,6 +6,11 @@ Bot Discord to play [QuipoQuiz](https://quipoquiz.com) with friends.
 > 1. **We are not affiliated with QuipoQuiz.**
 > 2. The bot is not hosted, you need to host it yourself.
 
+## Permissions
+
+The bot needs the permission `2147483648`:
+- Use Slash Commands
+
 ## Visuals (Spoiler)
 
 <details>
