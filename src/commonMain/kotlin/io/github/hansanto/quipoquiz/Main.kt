@@ -2,7 +2,6 @@ package io.github.hansanto.quipoquiz
 
 import de.comahe.i18n4k.i18n4kInitCldrPluralRules
 import dev.kord.core.Kord
-import dev.kord.core.enableEvent
 import dev.kord.core.enableEvents
 import dev.kord.core.event.gateway.ReadyEvent
 import dev.kord.core.event.interaction.ApplicationCommandInteractionCreateEvent
