@@ -8,7 +8,7 @@ pluginManagement {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("kotlin", "2.1.0")
+            version("kotlin", "2.1.10")
             version("kotlin-serialization", "1.8.0")
             version("kotlinx-io", "0.6.0")
             version("kotlinx-datetime", "0.6.1")
