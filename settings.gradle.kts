@@ -15,7 +15,7 @@ dependencyResolutionManagement {
             version("kotest", "6.0.0.M1")
             version("logging", "7.0.3")
             version("slf4j", "2.0.16")
-            version("detekt", "1.23.7")
+            version("detekt", "1.23.8")
             version("ktlint", "12.1.2")
             version("graphql", "4.1.1")
             version("graphql-ktor", "0.1.1")
