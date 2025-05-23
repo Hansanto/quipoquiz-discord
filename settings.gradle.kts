@@ -16,7 +16,7 @@ dependencyResolutionManagement {
             version("logging", "7.0.3")
             version("slf4j", "2.0.16")
             version("detekt", "1.23.7")
-            version("ktlint", "12.1.2")
+            version("ktlint", "12.3.0")
             version("graphql", "4.1.1")
             version("graphql-ktor", "0.1.1")
             version("graphql-mockserver", "0.1.0")
