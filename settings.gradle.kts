@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             version("kord", "feature-native-SNAPSHOT")
             version("kord-emoji", "feature-mpp-SNAPSHOT")
             version("i18n", "0.10.0")
-            version("mock", "2.6.1")
+            version("mock", "2.10.2")
             version("mockk", "1.13.16")
 
             plugin("kt-multiplatform", "org.jetbrains.kotlin.multiplatform").versionRef("kotlin")
