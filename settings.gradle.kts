@@ -11,7 +11,7 @@ dependencyResolutionManagement {
             version("kotlin", "2.1.10")
             version("kotlin-serialization", "1.8.0")
             version("kotlinx-io", "0.6.0")
-            version("kotlinx-datetime", "0.6.1")
+            version("kotlinx-datetime", "0.8.0-0.6.x-compat")
             version("kotest", "6.0.0.M1")
             version("logging", "7.0.3")
             version("slf4j", "2.0.16")
