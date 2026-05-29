@@ -24,7 +24,7 @@ dependencyResolutionManagement {
             version("kord-emoji", "feature-mpp-SNAPSHOT")
             version("i18n", "0.10.0")
             version("mock", "2.6.1")
-            version("mockk", "1.13.16")
+            version("mockk", "1.14.11")
 
             plugin("kt-multiplatform", "org.jetbrains.kotlin.multiplatform").versionRef("kotlin")
             plugin("kt-serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
